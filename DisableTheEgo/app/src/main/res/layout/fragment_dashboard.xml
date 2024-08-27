@@ -6,118 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".DashboardFragment">
 
-    <TextView
-        android:id="@+id/twKindness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="57dp"
-        android:text="@string/kindness"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/twOptimism"
-        app:layout_constraintTop_toBottomOf="@+id/swKindness" />
-
-    <TextView
-        android:id="@+id/twHappiness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/happiness"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swHappiness" />
-
-    <TextView
-        android:id="@+id/twOptimism"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="49dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/optimism"
-        app:layout_constraintStart_toEndOf="@+id/twHappiness"
-        app:layout_constraintTop_toBottomOf="@+id/swOptimism" />
-
     <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/swKindness"
+        android:id="@+id/swOptimism"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/twOptimism"
+        app:layout_constraintEnd_toStartOf="@+id/swKindness"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/swOptimism"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/swHappiness"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/swHappiness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
+        app:layout_constraintBottom_toTopOf="@+id/twHappiness"
         app:layout_constraintEnd_toStartOf="@+id/swOptimism"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/swOptimism"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/twHappiness"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        app:layout_constraintEnd_toStartOf="@+id/swKindness"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/swHappiness"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/swEgo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
-        android:checked="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/swRespect"
-        app:layout_constraintTop_toBottomOf="@+id/swKindness" />
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="35dp"
+        android:text="@string/happiness"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/swGiving"
+        app:layout_constraintEnd_toStartOf="@+id/twOptimism"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swHappiness" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/swGiving"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
+        app:layout_constraintBottom_toTopOf="@+id/twGiving"
         app:layout_constraintEnd_toStartOf="@+id/swRespect"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/swHappiness" />
-
-    <TextView
-        android:id="@+id/twEgo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="91dp"
-        android:text="@string/ego"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/twRespect"
-        app:layout_constraintTop_toBottomOf="@+id/swEgo" />
-
-    <TextView
-        android:id="@+id/twRespect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/respect"
-        app:layout_constraintStart_toEndOf="@+id/twGiving"
-        app:layout_constraintTop_toBottomOf="@+id/swRespect" />
+        app:layout_constraintTop_toBottomOf="@+id/twHappiness" />
 
     <TextView
         android:id="@+id/twGiving"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="35dp"
         android:text="@string/giving"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/twRespect"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/swGiving" />
 
@@ -125,10 +70,85 @@
         android:id="@+id/swRespect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
+        app:layout_constraintBottom_toTopOf="@+id/twRespect"
         app:layout_constraintEnd_toStartOf="@+id/swEgo"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/swGiving"
+        app:layout_constraintTop_toBottomOf="@+id/twOptimism" />
+
+    <TextView
+        android:id="@+id/twRespect"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:text="@string/respect"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/twEgo"
+        app:layout_constraintStart_toEndOf="@+id/twGiving"
+        app:layout_constraintTop_toBottomOf="@+id/swRespect" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/swKindness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/twKindness"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/swOptimism"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/twKindness"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:text="@string/kindness"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/swEgo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/twOptimism"
+        app:layout_constraintTop_toBottomOf="@+id/swKindness" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/swEgo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        app:layout_constraintBottom_toTopOf="@+id/twEgo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/swRespect"
+        app:layout_constraintTop_toBottomOf="@+id/twKindness" />
+
+    <TextView
+        android:id="@+id/twEgo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:text="@string/ego"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/twRespect"
+        app:layout_constraintTop_toBottomOf="@+id/swEgo" />
+
+    <TextView
+        android:id="@+id/twOptimism"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:text="@string/optimism"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/swRespect"
+        app:layout_constraintEnd_toStartOf="@+id/twKindness"
+        app:layout_constraintStart_toEndOf="@+id/twHappiness"
         app:layout_constraintTop_toBottomOf="@+id/swOptimism" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

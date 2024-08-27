@@ -3,44 +3,23 @@ package io.github.thwisse.disabletheego
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.materialswitch.MaterialSwitch
 import io.github.thwisse.disabletheego.databinding.FragmentDashboardBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DashboardFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
-
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var activeMenuItems: MutableList<Int>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -49,26 +28,36 @@ class DashboardFragment : Fragment() {
 
         val mainActivity = requireActivity() as MainActivity
 
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = mainActivity.getBottomNavigationView()
+        activeMenuItems = mutableListOf(R.id.dashboardFragment) // Dashboard öğesi sabit olarak eklenecek
 
         binding.swEgo.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 disableOtherSwitches()
-                mainActivity.getBottomNavigationView().visibility = View.GONE
-                bottomNavigationView.menu.findItem(R.id.happinessFragment).isVisible = false
-                bottomNavigationView.menu.findItem(R.id.optimismFragment).isVisible = false
-                bottomNavigationView.menu.findItem(R.id.givingFragment).isVisible = false
-                bottomNavigationView.menu.findItem(R.id.kindnessFragment).isVisible = false
-                bottomNavigationView.menu.findItem(R.id.respectFragment).isVisible = false
+                mainActivity.getBottomNavigationView().visibility = View.INVISIBLE
+
+                // Menü öğelerini temizle ama Dashboard'u menüde tut
+                bottomNavigationView.menu.clear()
+                activeMenuItems.clear()
+                activeMenuItems.add(R.id.dashboardFragment)
+                bottomNavigationView.menu.add(Menu.NONE, R.id.dashboardFragment, Menu.NONE, "Dashboard")
+                    .setIcon(R.drawable.dashboard_icon)
+            } else {
+                // Ego kapatıldığında Dashboard öğesi her zaman menüde kalsın
+                if (!activeMenuItems.contains(R.id.dashboardFragment)) {
+                    activeMenuItems.add(R.id.dashboardFragment)
+                    bottomNavigationView.menu.add(Menu.NONE, R.id.dashboardFragment, Menu.NONE, "Dashboard")
+                        .setIcon(R.drawable.dashboard_icon)
+                }
             }
         }
 
-        preventSwitchActivationIfEgoIsOn(binding.swHappiness)
-        preventSwitchActivationIfEgoIsOn(binding.swGiving)
-        preventSwitchActivationIfEgoIsOn(binding.swRespect)
-        preventSwitchActivationIfEgoIsOn(binding.swKindness)
-        preventSwitchActivationIfEgoIsOn(binding.swOptimism)
+        // Diğer switch'ler için dinleyiciler ekleyin
+        setSwitchListener(binding.swHappiness, R.id.happinessFragment, bottomNavigationView)
+        setSwitchListener(binding.swOptimism, R.id.optimismFragment, bottomNavigationView)
+        setSwitchListener(binding.swKindness, R.id.kindnessFragment, bottomNavigationView)
+        setSwitchListener(binding.swGiving, R.id.givingFragment, bottomNavigationView)
+        setSwitchListener(binding.swRespect, R.id.respectFragment, bottomNavigationView)
     }
 
     private fun disableOtherSwitches() {
@@ -79,93 +68,80 @@ class DashboardFragment : Fragment() {
         binding.swOptimism.isChecked = false
     }
 
-//    private fun invisibleItems(switch: MaterialSwitch) {
-//
-//        val bottomNavigationView =
-//            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-//
-//        switch.setOnCheckedChangeListener { _, isChecked ->
-//            if (switch != binding.swEgo) {
-//                bottomNavigationView.menu.findItem(R.id.happinessFragment).isVisible = false
-//                bottomNavigationView.menu.findItem(R.id.optimismFragment).isVisible = false
-//                bottomNavigationView.menu.findItem(R.id.givingFragment).isVisible = false
-//                bottomNavigationView.menu.findItem(R.id.kindnessFragment).isVisible = false
-//                bottomNavigationView.menu.findItem(R.id.respectFragment).isVisible = false
-//            }
-//        }
-//    }
-
-    private fun preventSwitchActivationIfEgoIsOn(switch: MaterialSwitch) {
-
-        val mainActivity = requireActivity() as MainActivity
-
-        val bottomNavigationView =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-
-        //val menu = bottomNavigationView.menu
-
+    private fun setSwitchListener(switch: MaterialSwitch, menuItemId: Int, bottomNavigationView: BottomNavigationView) {
         switch.setOnCheckedChangeListener { _, isChecked ->
-            // sw ego checked iken ayni anda secilen switch de checked olursa:
-            if (binding.swEgo.isChecked && isChecked) {
+            if (binding.swEgo.isChecked) {
+                // Eğer Ego switch'i açık ise, diğer switch'lerin açılmasına izin vermeyin
                 switch.isChecked = false
+            } else if (isChecked) {
+                bottomNavigationView.visibility = View.VISIBLE
+                addMenuItem(menuItemId, bottomNavigationView)
+            } else {
+                removeMenuItem(menuItemId, bottomNavigationView)
             }
-            if (!binding.swEgo.isChecked && isChecked) {
-                mainActivity.getBottomNavigationView().visibility = View.VISIBLE
-                var fragmentName: Int? = null
-                when {
-                    switch.id == R.id.swHappiness -> { fragmentName = R.id.happinessFragment }
-                    switch.id == R.id.swGiving -> { fragmentName = R.id.givingFragment }
-                    switch.id == R.id.swRespect -> { fragmentName = R.id.respectFragment }
-                    switch.id == R.id.swKindness -> { fragmentName = R.id.kindnessFragment }
-                    switch.id == R.id.swOptimism -> { fragmentName = R.id.optimismFragment }
-                    else -> { }
-                }
-                val menuItem = fragmentName?.let { bottomNavigationView.menu.findItem(it) }
-                if (menuItem != null) {
-                    menuItem.isVisible = true
-                }
+        }
+    }
+
+    private fun removeMenuItem(menuItemId: Int, bottomNavigationView: BottomNavigationView) {
+        activeMenuItems.remove(menuItemId)
+        rearrangeMenuItems(bottomNavigationView) // Menü öğelerini yeniden düzenle
+    }
+
+    private fun rearrangeMenuItems(bottomNavigationView: BottomNavigationView) {
+        bottomNavigationView.menu.clear()
+
+        // Dashboard her zaman en başta olacak
+        bottomNavigationView.menu.add(Menu.NONE, R.id.dashboardFragment, Menu.NONE, "Dashboard")
+            .setIcon(R.drawable.dashboard_icon)
+
+        // Diğer öğeleri sabit sıraya göre ekle
+        val allItemsInOrder = listOf(
+            R.id.happinessFragment,
+            R.id.optimismFragment,
+            R.id.kindnessFragment,
+            R.id.givingFragment,
+            R.id.respectFragment
+        )
+
+        allItemsInOrder.forEach { id ->
+            if (activeMenuItems.contains(id)) {
+                bottomNavigationView.menu.add(Menu.NONE, id, Menu.NONE, getMenuItemTitle(id))
+                    .setIcon(getMenuItemIcon(id))
             }
-            if (!binding.swEgo.isChecked && !isChecked) {
-                mainActivity.getBottomNavigationView().visibility = View.VISIBLE
-                var fragmentName: Int? = null
-                when {
-                    switch.id == R.id.swHappiness -> { fragmentName = R.id.happinessFragment }
-                    switch.id == R.id.swGiving -> { fragmentName = R.id.givingFragment }
-                    switch.id == R.id.swRespect -> { fragmentName = R.id.respectFragment }
-                    switch.id == R.id.swKindness -> { fragmentName = R.id.kindnessFragment }
-                    switch.id == R.id.swOptimism -> { fragmentName = R.id.optimismFragment }
-                    else -> { }
-                }
-                val menuItem = fragmentName?.let { bottomNavigationView.menu.findItem(it) }
-                if (menuItem != null) {
-                    menuItem.isVisible = false
-                }
-            }
+        }
+    }
+
+    private fun getMenuItemTitle(menuItemId: Int): String {
+        return when (menuItemId) {
+            R.id.happinessFragment -> "Happiness"
+            R.id.optimismFragment -> "Optimism"
+            R.id.kindnessFragment -> "Kindness"
+            R.id.givingFragment -> "Giving"
+            R.id.respectFragment -> "Respect"
+            else -> ""
+        }
+    }
+
+    private fun getMenuItemIcon(menuItemId: Int): Int {
+        return when (menuItemId) {
+            R.id.happinessFragment -> R.drawable.happiness_icon
+            R.id.optimismFragment -> R.drawable.optimism_icon
+            R.id.kindnessFragment -> R.drawable.kindness_icon
+            R.id.givingFragment -> R.drawable.giving_icon
+            R.id.respectFragment -> R.drawable.respect_icon
+            else -> 0
+        }
+    }
+
+    private fun addMenuItem(menuItemId: Int, bottomNavigationView: BottomNavigationView) {
+        if (!activeMenuItems.contains(menuItemId) && activeMenuItems.size < 5) {
+            activeMenuItems.add(menuItemId)
+            rearrangeMenuItems(bottomNavigationView)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MainFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DashboardFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
