@@ -2,4 +2,10 @@
     <string name="app_name">DisableTheEgo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="giving">Giving</string>
+    <string name="respect">Respect</string>
+    <string name="ego">Ego</string>
+    <string name="happiness">Happiness</string>
+    <string name="optimism">Optimism</string>
+    <string name="kindness">Kindness</string>
 </resources>
