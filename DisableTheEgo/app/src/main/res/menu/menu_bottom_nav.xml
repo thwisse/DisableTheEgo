@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@id/happinessFragment"
+        android:title="@string/happiness"
+        android:visible="false"
+        android:icon="@drawable/happiness_icon"/>
+    <item
+        android:id="@id/optimismFragment"
+        android:title="@string/optimism"
+        android:visible="false"
+        android:icon="@drawable/optimism_icon"/>
+    <item
+        android:id="@id/kindnessFragment"
+        android:title="@string/kindness"
+        android:visible="false"
+        android:icon="@drawable/kindness_icon"/>
+    <item
+        android:id="@id/givingFragment"
+        android:title="@string/giving"
+        android:visible="false"
+        android:icon="@drawable/giving_icon"/>
+    <item
+        android:id="@id/respectFragment"
+        android:title="@string/respect"
+        android:visible="false"
+        android:icon="@drawable/respect_icon"/>
+
 </menu>
