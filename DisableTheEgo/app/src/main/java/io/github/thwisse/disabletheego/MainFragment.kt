@@ -46,9 +46,14 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val mainActivity = requireActivity() as MainActivity
+
         binding.swEgo.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 disableOtherSwitches()
+                mainActivity.getBottomNavigationView().visibility = View.GONE
+            } else {
+                mainActivity.getBottomNavigationView().visibility = View.VISIBLE
             }
         }
 

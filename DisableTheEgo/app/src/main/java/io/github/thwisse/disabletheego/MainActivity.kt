@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.github.thwisse.disabletheego.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +31,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         val navController = getNavController()
+
+
+    }
+
+    fun getBottomNavigationView(): BottomNavigationView {
+        return binding.bottomNavigationView
     }
 
     fun getNavController(): NavController {
