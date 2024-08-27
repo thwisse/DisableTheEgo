@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.materialswitch.MaterialSwitch
 import io.github.thwisse.disabletheego.databinding.FragmentMainBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,8 +46,34 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.swEgo.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                disableOtherSwitches()
+            }
+        }
 
+        preventSwitchActivationIfEgoIsOn(binding.swHappiness)
+        preventSwitchActivationIfEgoIsOn(binding.swGiving)
+        preventSwitchActivationIfEgoIsOn(binding.swRespect)
+        preventSwitchActivationIfEgoIsOn(binding.swKindness)
+        preventSwitchActivationIfEgoIsOn(binding.swOptimism)
+    }
 
+    private fun disableOtherSwitches() {
+        binding.swGiving.isChecked = false
+        binding.swRespect.isChecked = false
+        binding.swKindness.isChecked = false
+        binding.swHappiness.isChecked = false
+        binding.swOptimism.isChecked = false
+    }
+
+    private fun preventSwitchActivationIfEgoIsOn(switch: MaterialSwitch) {
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            // sw ego checked iken ayni anda secilen switch de checked olursa:
+            if (binding.swEgo.isChecked && isChecked) {
+                switch.isChecked = false
+            }
+        }
     }
 
     override fun onDestroyView() {
