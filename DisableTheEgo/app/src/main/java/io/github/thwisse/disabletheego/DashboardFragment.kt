@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.materialswitch.MaterialSwitch
 import io.github.thwisse.disabletheego.databinding.FragmentDashboardBinding
@@ -35,6 +37,15 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        savedInstanceState?.let {
+            binding.swHappiness.isChecked = it.getBoolean("swHappiness", false)
+            binding.swOptimism.isChecked = it.getBoolean("swOptimism", false)
+            binding.swKindness.isChecked = it.getBoolean("swKindness", false)
+            binding.swGiving.isChecked = it.getBoolean("swGiving", false)
+            binding.swRespect.isChecked = it.getBoolean("swRespect", false)
+            binding.swEgo.isChecked = it.getBoolean("swEgo", true) // Varsayılan olarak açık
+        }
+
         // MainActivity referansı alınır.
         val mainActivity = requireActivity() as MainActivity
 
@@ -43,13 +54,28 @@ class DashboardFragment : Fragment() {
         // Dashboard menü öğesi başlangıçta aktif menü öğeleri listesine eklenir.
         activeMenuItems = mutableListOf(R.id.dashboardFragment)
 
+        // Ego Switch'in durumuna göre BottomNavigationView'in görünürlüğünü ayarlayın.
+        if (binding.swEgo.isChecked) {
+            bottomNavigationView.visibility = View.INVISIBLE
+        } else {
+            bottomNavigationView.visibility = View.VISIBLE
+        }
+
+        // Eğer BottomNavigationView daha önce görünür yapıldıysa, tekrar invisible yapma.
+        if (!binding.swEgo.isChecked && bottomNavigationView.visibility != View.VISIBLE) {
+            bottomNavigationView.visibility = View.VISIBLE
+        }
+
+        // Diğer Switch'lerin durumlarını kontrol ederek BottomNavigationView'e ekleyin.
+        updateBottomNavigationItems(bottomNavigationView)
+
         // Ego switch'i dinleyicisi. Ego açıldığında diğer switch'leri kapatır ve menüyü temizler.
         binding.swEgo.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // Diğer switch'leri kapat
                 disableOtherSwitches()
                 // BottomNavigationView'i görünmez yap
-                mainActivity.getBottomNavigationView().visibility = View.INVISIBLE
+                //mainActivity.getBottomNavigationView().visibility = View.INVISIBLE
 
                 // Menü öğelerini temizle ama Dashboard'u menüde tut
                 bottomNavigationView.menu.clear() // Menü öğeleri temizlenir.
@@ -58,7 +84,7 @@ class DashboardFragment : Fragment() {
                 bottomNavigationView.menu.add(Menu.NONE, R.id.dashboardFragment, Menu.NONE, "Dashboard")
                     .setIcon(R.drawable.dashboard_icon) // Dashboard menü öğesi menüye eklenir.
             } else {
-                mainActivity.getBottomNavigationView().visibility = View.VISIBLE
+                //mainActivity.getBottomNavigationView().visibility = View.INVISIBLE
                 // Ego switch'i kapatıldığında Dashboard'un menüde olduğundan emin olun
                 if (!activeMenuItems.contains(R.id.dashboardFragment)) {
                     activeMenuItems.add(R.id.dashboardFragment) // Dashboard tekrar aktif menü öğelerine eklenir.
@@ -74,6 +100,35 @@ class DashboardFragment : Fragment() {
         setSwitchListener(binding.swKindness, R.id.kindnessFragment, bottomNavigationView)
         setSwitchListener(binding.swGiving, R.id.givingFragment, bottomNavigationView)
         setSwitchListener(binding.swRespect, R.id.respectFragment, bottomNavigationView)
+    }
+
+    private fun updateBottomNavigationItems(bottomNavigationView: BottomNavigationView) {
+        // Mevcut Switch durumlarını kontrol edin ve BottomNavigationView'e gerekli item'ları ekleyin.
+        if (binding.swHappiness.isChecked) {
+            addMenuItem(R.id.happinessFragment, bottomNavigationView)
+        }
+        if (binding.swOptimism.isChecked) {
+            addMenuItem(R.id.optimismFragment, bottomNavigationView)
+        }
+        if (binding.swKindness.isChecked) {
+            addMenuItem(R.id.kindnessFragment, bottomNavigationView)
+        }
+        if (binding.swGiving.isChecked) {
+            addMenuItem(R.id.givingFragment, bottomNavigationView)
+        }
+        if (binding.swRespect.isChecked) {
+            addMenuItem(R.id.respectFragment, bottomNavigationView)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("swHappiness", binding.swHappiness.isChecked)
+        outState.putBoolean("swOptimism", binding.swOptimism.isChecked)
+        outState.putBoolean("swKindness", binding.swKindness.isChecked)
+        outState.putBoolean("swGiving", binding.swGiving.isChecked)
+        outState.putBoolean("swRespect", binding.swRespect.isChecked)
+        outState.putBoolean("swEgo", binding.swEgo.isChecked)
     }
 
     // disableOtherSwitches fonksiyonu, Ego switch'i açıldığında diğer switch'leri kapatır.
