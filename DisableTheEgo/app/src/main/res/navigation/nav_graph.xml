@@ -10,7 +10,23 @@
         android:id="@+id/dashboardFragment"
         android:name="io.github.thwisse.disabletheego.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_happinessFragment"
+            app:destination="@id/happinessFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_optimismFragment"
+            app:destination="@id/optimismFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_kindnessFragment"
+            app:destination="@id/kindnessFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_givingFragment"
+            app:destination="@id/givingFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_respectFragment"
+            app:destination="@id/respectFragment" />
+    </fragment>
     <fragment
         android:id="@+id/happinessFragment"
         android:name="io.github.thwisse.disabletheego.HappinessFragment"
