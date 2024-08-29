@@ -15,7 +15,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/swHappiness"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        android:checked="false"/>
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/swHappiness"
@@ -26,7 +27,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        android:checked="false"/>
 
     <TextView
         android:id="@+id/twHappiness"
@@ -50,7 +52,8 @@
         app:layout_constraintEnd_toStartOf="@+id/swRespect"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/twHappiness" />
+        app:layout_constraintTop_toBottomOf="@+id/twHappiness"
+        android:checked="false"/>
 
     <TextView
         android:id="@+id/twGiving"
@@ -74,7 +77,8 @@
         app:layout_constraintEnd_toStartOf="@+id/swEgo"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/swGiving"
-        app:layout_constraintTop_toBottomOf="@+id/twOptimism" />
+        app:layout_constraintTop_toBottomOf="@+id/twOptimism"
+        android:checked="false"/>
 
     <TextView
         android:id="@+id/twRespect"
@@ -98,7 +102,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/swOptimism"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        android:checked="false"/>
 
     <TextView
         android:id="@+id/twKindness"
@@ -117,7 +122,6 @@
         android:id="@+id/swEgo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
         app:layout_constraintBottom_toTopOf="@+id/twEgo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

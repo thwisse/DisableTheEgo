@@ -6,95 +6,56 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.materialswitch.MaterialSwitch
 import io.github.thwisse.disabletheego.databinding.FragmentDashboardBinding
 
-// DashboardFragment sınıfı, bir Fragment'tir. Bu fragment içinde bir BottomNavigationView
-// ve birkaç Switch kontrolü bulunur.
 class DashboardFragment : Fragment() {
 
-    // Binding referansı, XML dosyasında tanımlanan görsel bileşenlere erişim sağlar.
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
-    // Aktif menü öğelerinin ID'lerini saklayan bir liste.
-    // Dashboard menü öğesi başlangıçta bu listede yer alır.
+    // Aktif menü öğelerini ve switch durumlarını saklayan listeler
     private lateinit var activeMenuItems: MutableList<Int>
+    private lateinit var switchStates: MutableMap<Int, Boolean>
 
-    // onCreateView, Fragment'ın arayüzünü oluşturur ve binding'i başlatır.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        // FragmentDashboardBinding sınıfından binding nesnesi oluşturulur.
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        return binding.root // Arayüzün kök view'i döndürülür.
+        return binding.root
     }
 
-    // onViewCreated, View oluşturulduktan sonra çağrılır. Bu metot, view'larla ilgili işlemleri yapar.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        savedInstanceState?.let {
-            binding.swHappiness.isChecked = it.getBoolean("swHappiness", false)
-            binding.swOptimism.isChecked = it.getBoolean("swOptimism", false)
-            binding.swKindness.isChecked = it.getBoolean("swKindness", false)
-            binding.swGiving.isChecked = it.getBoolean("swGiving", false)
-            binding.swRespect.isChecked = it.getBoolean("swRespect", false)
-            binding.swEgo.isChecked = it.getBoolean("swEgo", true) // Varsayılan olarak açık
-        }
-
-        // MainActivity referansı alınır.
         val mainActivity = requireActivity() as MainActivity
-
-        // BottomNavigationView, MainActivity'den alınır.
         val bottomNavigationView = mainActivity.getBottomNavigationView()
-        // Dashboard menü öğesi başlangıçta aktif menü öğeleri listesine eklenir.
+
+        // Switch durumları ve aktif menü öğeleri başlatılır
         activeMenuItems = mutableListOf(R.id.dashboardFragment)
+        switchStates = mutableMapOf(
+            R.id.happinessFragment to false,
+            R.id.optimismFragment to false,
+            R.id.kindnessFragment to false,
+            R.id.givingFragment to false,
+            R.id.respectFragment to false
+        )
 
-        // Ego Switch'in durumuna göre BottomNavigationView'in görünürlüğünü ayarlayın.
-        if (binding.swEgo.isChecked) {
-            bottomNavigationView.visibility = View.INVISIBLE
-        } else {
-            bottomNavigationView.visibility = View.VISIBLE
-        }
+        // Dashboard'a geri dönüldüğünde switch'leri ve menü öğelerini güncelle
+        updateSwitchesAndMenuItems(bottomNavigationView)
 
-        // Eğer BottomNavigationView daha önce görünür yapıldıysa, tekrar invisible yapma.
-        if (!binding.swEgo.isChecked && bottomNavigationView.visibility != View.VISIBLE) {
-            bottomNavigationView.visibility = View.VISIBLE
-        }
-
-        // Diğer Switch'lerin durumlarını kontrol ederek BottomNavigationView'e ekleyin.
-        updateBottomNavigationItems(bottomNavigationView)
-
-        // Ego switch'i dinleyicisi. Ego açıldığında diğer switch'leri kapatır ve menüyü temizler.
+        // Ego switch'i dinleyicisi
         binding.swEgo.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                // Diğer switch'leri kapat
                 disableOtherSwitches()
-                // BottomNavigationView'i görünmez yap
-                //mainActivity.getBottomNavigationView().visibility = View.INVISIBLE
-
-                // Menü öğelerini temizle ama Dashboard'u menüde tut
-                bottomNavigationView.menu.clear() // Menü öğeleri temizlenir.
-                activeMenuItems.clear() // Aktif menü öğeleri listesi temizlenir.
-                activeMenuItems.add(R.id.dashboardFragment) // Dashboard menü öğesi tekrar eklenir.
-                bottomNavigationView.menu.add(Menu.NONE, R.id.dashboardFragment, Menu.NONE, "Dashboard")
-                    .setIcon(R.drawable.dashboard_icon) // Dashboard menü öğesi menüye eklenir.
-            } else {
-                //mainActivity.getBottomNavigationView().visibility = View.INVISIBLE
-                // Ego switch'i kapatıldığında Dashboard'un menüde olduğundan emin olun
-                if (!activeMenuItems.contains(R.id.dashboardFragment)) {
-                    activeMenuItems.add(R.id.dashboardFragment) // Dashboard tekrar aktif menü öğelerine eklenir.
-                    bottomNavigationView.menu.add(Menu.NONE, R.id.dashboardFragment, Menu.NONE, "Dashboard")
-                        .setIcon(R.drawable.dashboard_icon) // Dashboard menü öğesi menüye eklenir.
-                }
+                bottomNavigationView.visibility = View.INVISIBLE
+                // Menüde Dashboard dışındaki tüm öğeleri kaldır
+                removeAllNonDashboardItems(bottomNavigationView)
             }
         }
 
-        // Diğer switch'ler için dinleyiciler eklenir.
+        // Diğer switch'ler için dinleyiciler eklenir
         setSwitchListener(binding.swHappiness, R.id.happinessFragment, bottomNavigationView)
         setSwitchListener(binding.swOptimism, R.id.optimismFragment, bottomNavigationView)
         setSwitchListener(binding.swKindness, R.id.kindnessFragment, bottomNavigationView)
@@ -102,36 +63,60 @@ class DashboardFragment : Fragment() {
         setSwitchListener(binding.swRespect, R.id.respectFragment, bottomNavigationView)
     }
 
-    private fun updateBottomNavigationItems(bottomNavigationView: BottomNavigationView) {
-        // Mevcut Switch durumlarını kontrol edin ve BottomNavigationView'e gerekli item'ları ekleyin.
-        if (binding.swHappiness.isChecked) {
-            addMenuItem(R.id.happinessFragment, bottomNavigationView)
+    private fun updateSwitchesAndMenuItems(bottomNavigationView: BottomNavigationView) {
+        // Dashboard dışındaki mevcut menü öğelerine göre switch'leri güncelle
+        val menu = bottomNavigationView.menu
+
+        menu.findItem(R.id.happinessFragment)?.let {
+            switchStates[R.id.happinessFragment] = true
+            if (!activeMenuItems.contains(R.id.happinessFragment)) {
+                activeMenuItems.add(R.id.happinessFragment)
+            }
         }
-        if (binding.swOptimism.isChecked) {
-            addMenuItem(R.id.optimismFragment, bottomNavigationView)
+
+        menu.findItem(R.id.optimismFragment)?.let {
+            switchStates[R.id.optimismFragment] = true
+            if (!activeMenuItems.contains(R.id.optimismFragment)) {
+                activeMenuItems.add(R.id.optimismFragment)
+            }
         }
-        if (binding.swKindness.isChecked) {
-            addMenuItem(R.id.kindnessFragment, bottomNavigationView)
+
+        menu.findItem(R.id.kindnessFragment)?.let {
+            switchStates[R.id.kindnessFragment] = true
+            if (!activeMenuItems.contains(R.id.kindnessFragment)) {
+                activeMenuItems.add(R.id.kindnessFragment)
+            }
         }
-        if (binding.swGiving.isChecked) {
-            addMenuItem(R.id.givingFragment, bottomNavigationView)
+
+        menu.findItem(R.id.givingFragment)?.let {
+            switchStates[R.id.givingFragment] = true
+            if (!activeMenuItems.contains(R.id.givingFragment)) {
+                activeMenuItems.add(R.id.givingFragment)
+            }
         }
-        if (binding.swRespect.isChecked) {
-            addMenuItem(R.id.respectFragment, bottomNavigationView)
+
+        menu.findItem(R.id.respectFragment)?.let {
+            switchStates[R.id.respectFragment] = true
+            if (!activeMenuItems.contains(R.id.respectFragment)) {
+                activeMenuItems.add(R.id.respectFragment)
+            }
         }
+
+        // Switch'lerin durumunu güncelle
+        updateSwitches()
+
+        // Ego switch'in durumunu kontrol et ve güncelle
+        binding.swEgo.isChecked = menu.size() <= 1
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean("swHappiness", binding.swHappiness.isChecked)
-        outState.putBoolean("swOptimism", binding.swOptimism.isChecked)
-        outState.putBoolean("swKindness", binding.swKindness.isChecked)
-        outState.putBoolean("swGiving", binding.swGiving.isChecked)
-        outState.putBoolean("swRespect", binding.swRespect.isChecked)
-        outState.putBoolean("swEgo", binding.swEgo.isChecked)
+    private fun updateSwitches() {
+        binding.swHappiness.isChecked = switchStates[R.id.happinessFragment] == true
+        binding.swOptimism.isChecked = switchStates[R.id.optimismFragment] == true
+        binding.swKindness.isChecked = switchStates[R.id.kindnessFragment] == true
+        binding.swGiving.isChecked = switchStates[R.id.givingFragment] == true
+        binding.swRespect.isChecked = switchStates[R.id.respectFragment] == true
     }
 
-    // disableOtherSwitches fonksiyonu, Ego switch'i açıldığında diğer switch'leri kapatır.
     private fun disableOtherSwitches() {
         binding.swGiving.isChecked = false
         binding.swRespect.isChecked = false
@@ -140,48 +125,57 @@ class DashboardFragment : Fragment() {
         binding.swOptimism.isChecked = false
     }
 
-    // setSwitchListener fonksiyonu, her bir switch için bir dinleyici ekler.
     private fun setSwitchListener(
         switch: MaterialSwitch, menuItemId: Int, bottomNavigationView: BottomNavigationView) {
         switch.setOnCheckedChangeListener { _, isChecked ->
             if (binding.swEgo.isChecked) {
-                // Eğer Ego switch'i açıksa, diğer switch'lerin açılmasına izin verme
                 switch.isChecked = false
-            } else if (isChecked) {
-                // Switch açıldığında menü öğesi eklenir
-                bottomNavigationView.visibility = View.VISIBLE
-                addMenuItem(menuItemId, bottomNavigationView)
+                return@setOnCheckedChangeListener
             } else {
-                // Switch kapatıldığında menü öğesi kaldırılır
+                bottomNavigationView.visibility = View.VISIBLE
+            }
+
+            if (isChecked) {
+                if (activeMenuItems.size >= 5) {
+                    switch.isChecked = false
+                } else {
+                    addMenuItem(menuItemId, bottomNavigationView)
+                }
+            } else {
                 removeMenuItem(menuItemId, bottomNavigationView)
             }
+
+            // Switch durumunu güncelle
+            switchStates[menuItemId] = isChecked
         }
     }
 
-    // removeMenuItem fonksiyonu, menü öğesini listeden ve BottomNavigationView'den kaldırır.
     private fun removeMenuItem(menuItemId: Int, bottomNavigationView: BottomNavigationView) {
-        activeMenuItems.remove(menuItemId) // Menü öğesi aktif menü listesinden kaldırılır.
-        rearrangeMenuItems(bottomNavigationView) // Menü öğeleri yeniden sıralanır.
+        if (activeMenuItems.contains(menuItemId)) {
+            activeMenuItems.remove(menuItemId)
+            rearrangeMenuItems(bottomNavigationView)
+        }
     }
 
-    // rearrangeMenuItems fonksiyonu, menü öğelerini aktif menü öğelerinin sırasına göre yeniden düzenler.
     private fun rearrangeMenuItems(bottomNavigationView: BottomNavigationView) {
-        bottomNavigationView.menu.clear() // Mevcut menü temizlenir.
+        bottomNavigationView.menu.clear()
 
-        // Dashboard her zaman en başta olur
         bottomNavigationView.menu.add(Menu.NONE, R.id.dashboardFragment, Menu.NONE, "Dashboard")
-            .setIcon(R.drawable.dashboard_icon) // Dashboard menü öğesi menüye eklenir.
+            .setIcon(R.drawable.dashboard_icon)
 
-        // Diğer aktif öğeleri ekle (basılma sırasına göre)
-        activeMenuItems.forEachIndexed { index, id ->
-            if (index != 0) { // 0 indexi Dashboard olduğu için atlıyoruz
+        activeMenuItems.forEach { id ->
+            if (id != R.id.dashboardFragment) {
                 bottomNavigationView.menu.add(Menu.NONE, id, Menu.NONE, getMenuItemTitle(id))
                     .setIcon(getMenuItemIcon(id))
             }
         }
     }
 
-    // getMenuItemTitle fonksiyonu, menü öğesi için başlık döner.
+    private fun removeAllNonDashboardItems(bottomNavigationView: BottomNavigationView) {
+        activeMenuItems.removeAll { it != R.id.dashboardFragment }
+        rearrangeMenuItems(bottomNavigationView)
+    }
+
     private fun getMenuItemTitle(menuItemId: Int): String {
         return when (menuItemId) {
             R.id.happinessFragment -> "Happiness"
@@ -193,7 +187,6 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    // getMenuItemIcon fonksiyonu, menü öğesi için ikon döner.
     private fun getMenuItemIcon(menuItemId: Int): Int {
         return when (menuItemId) {
             R.id.happinessFragment -> R.drawable.happiness_icon
@@ -205,15 +198,13 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    // addMenuItem fonksiyonu, menü öğesini aktif menü listesine ve BottomNavigationView'e ekler.
     private fun addMenuItem(menuItemId: Int, bottomNavigationView: BottomNavigationView) {
-        if (!activeMenuItems.contains(menuItemId) && activeMenuItems.size < 5) {
-            activeMenuItems.add(menuItemId) // Menü öğesi aktif menü listesine eklenir.
-            rearrangeMenuItems(bottomNavigationView) // Menü öğeleri yeniden düzenlenir.
+        if (!activeMenuItems.contains(menuItemId)) {
+            activeMenuItems.add(menuItemId)
+            rearrangeMenuItems(bottomNavigationView)
         }
     }
 
-    // onDestroyView fonksiyonu, view yok edilmeden önce binding'i temizler.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

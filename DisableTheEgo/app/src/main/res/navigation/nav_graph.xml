@@ -11,28 +11,15 @@
         android:name="io.github.thwisse.disabletheego.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard">
-        <action
-            android:id="@+id/action_dashboardFragment_to_happinessFragment2"
-            app:destination="@id/happinessFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_optimismFragment2"
-            app:destination="@id/optimismFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_kindnessFragment2"
-            app:destination="@id/kindnessFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_givingFragment2"
-            app:destination="@id/givingFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_respectFragment2"
-            app:destination="@id/respectFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/happinessFragment"
         android:name="io.github.thwisse.disabletheego.HappinessFragment"
         android:label="fragment_happiness"
         tools:layout="@layout/fragment_happiness">
     </fragment>
+
     <fragment
         android:id="@+id/optimismFragment"
         android:name="io.github.thwisse.disabletheego.OptimismFragment"
@@ -46,16 +33,19 @@
         android:label="fragment_kindness"
         tools:layout="@layout/fragment_kindness">
     </fragment>
+
     <fragment
         android:id="@+id/givingFragment"
         android:name="io.github.thwisse.disabletheego.GivingFragment"
         android:label="fragment_giving"
         tools:layout="@layout/fragment_giving">
     </fragment>
+
     <fragment
         android:id="@+id/respectFragment"
         android:name="io.github.thwisse.disabletheego.RespectFragment"
         android:label="fragment_respect"
         tools:layout="@layout/fragment_respect" >
     </fragment>
+
 </navigation>

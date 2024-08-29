@@ -1,13 +1,11 @@
 package io.github.thwisse.disabletheego
 
 import android.os.Bundle
-import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.github.thwisse.disabletheego.databinding.ActivityMainBinding
@@ -34,18 +32,16 @@ class MainActivity : AppCompatActivity() {
 
         val navController = getNavController()
 
-        // Geri tuşuna basıldığında NavController'ı kullanarak geri gidin
-        onBackPressedDispatcher.addCallback(this) {
-            if (!navController.popBackStack()) {
-                finish()
-            }
-        }
-
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             val currentFragmentId = navController.currentDestination?.id
 
             when (item.itemId) {
-
+                R.id.dashboardFragment -> {
+                    if (currentFragmentId != R.id.dashboardFragment) {
+                        navController.navigate(R.id.dashboardFragment)
+                    }
+                    true
+                }
                 R.id.happinessFragment -> {
                     if (currentFragmentId != R.id.happinessFragment) {
                         navController.navigate(R.id.happinessFragment)
@@ -76,16 +72,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     true
                 }
-                R.id.dashboardFragment -> {
-                    // Eğer dashboard'a geri dönmek istiyorsak, popBackStack ile stack'teki mevcut dashboard'u geri getirin
-                    navController.popBackStack(R.id.dashboardFragment, false)
-                    true
-                }
                 else -> false
             }
         }
-
-
     }
 
     fun getBottomNavigationView(): BottomNavigationView {
