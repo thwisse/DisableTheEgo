@@ -16,6 +16,8 @@
         app:layout_constraintStart_toEndOf="@+id/swHappiness"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
+        app:trackTint="@color/switch_track_color"
+        app:thumbTint="@color/switch_thumb_color"
         android:checked="false"/>
 
     <com.google.android.material.materialswitch.MaterialSwitch
@@ -28,6 +30,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
+        app:trackTint="@color/switch_track_color"
+        app:thumbTint="@color/switch_thumb_color"
         android:checked="false"/>
 
     <TextView
@@ -53,6 +57,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/twHappiness"
+        app:trackTint="@color/switch_track_color"
+        app:thumbTint="@color/switch_thumb_color"
         android:checked="false"/>
 
     <TextView
@@ -78,6 +84,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/swGiving"
         app:layout_constraintTop_toBottomOf="@+id/twOptimism"
+        app:trackTint="@color/switch_track_color"
+        app:thumbTint="@color/switch_thumb_color"
         android:checked="false"/>
 
     <TextView
@@ -103,6 +111,8 @@
         app:layout_constraintStart_toEndOf="@+id/swOptimism"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
+        app:trackTint="@color/switch_track_color"
+        app:thumbTint="@color/switch_thumb_color"
         android:checked="false"/>
 
     <TextView
@@ -126,7 +136,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/swRespect"
-        app:layout_constraintTop_toBottomOf="@+id/twKindness" />
+        app:trackTint="@color/switch_track_color"
+        app:thumbTint="@color/switch_thumb_color"
+        app:layout_constraintTop_toBottomOf="@+id/twKindness"
+        android:checked="true"/>
 
     <TextView
         android:id="@+id/twEgo"

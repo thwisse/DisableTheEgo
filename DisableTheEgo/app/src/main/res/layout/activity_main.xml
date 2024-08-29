@@ -29,7 +29,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom_nav" />
+        app:menu="@menu/menu_bottom_nav"
+        app:labelVisibilityMode="selected">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

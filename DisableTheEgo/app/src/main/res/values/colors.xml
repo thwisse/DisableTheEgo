@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="switch_track_color_checked">#0ACE12</color>
+    <color name="switch_track_color_unchecked">#D70A0A</color>
+    <color name="switch_thumb_color_white">#FFFFFFFF</color>
 </resources>
