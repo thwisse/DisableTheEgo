@@ -57,4 +57,7 @@ dependencies {
     // Testing Navigation
     androidTestImplementation(libs.androidx.navigation.testing)
 
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
+
 }

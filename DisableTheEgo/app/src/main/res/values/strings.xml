@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DisableTheEgo</string>
+    <string name="app_name">Disable The Ego</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="giving">Giving</string>
@@ -9,4 +9,8 @@
     <string name="optimism">Optimism</string>
     <string name="kindness">Kindness</string>
     <string name="dashboard">Dashboard</string>
+    <string name="strRespect">Respect isn’t just a word, it’s a way of life.</string>
+    <string name="strHappiness">If you are the worlds best boss, you must be happy.</string>
+    <string name="strKindness">Be kind to the people who love you.</string>
+    <string name="strGiving">When you see fresh cookies after donating, you\'ll say, I am glad I donated.</string>
 </resources>
