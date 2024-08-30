@@ -1,15 +1,14 @@
 # Disable The Ego
 
-_DisableTheEgo_ is an Android application designed to help users manage and "disable" their ego by focusing on positive traits such as kindness, respect, optimism, happiness, and giving. The app features a dashboard where users can enable or disable different traits, visualize them in a BottomNavigationView, and interact with the app through various fragments.
+_Disable The Ego_ is an Android application designed to help users manage and "disable" their ego by focusing on positive traits such as kindness, respect, optimism, happiness, and giving. The app features a dashboard where users can enable or disable different traits, visualize them in a BottomNavigationView, and interact with the app through various fragments.
 
-![ss1](DisableTheEgo/assets/ss_dashboard.jpg) ![ss2](DisableTheEgo/assets/ss_happiness.gif) ![ss3](DisableTheEgo/assets/ss_kindness.jpg)
+<img src="DisableTheEgo/assets/ss_dashboard.jpg"  width="300"/> <img src="DisableTheEgo/assets/ss_happiness.gif" alt="Uygulama Kullanımı" width="305"/> <img src="DisableTheEgo/assets/ss_kindness.jpg" alt="Uygulama Kullanımı" width="300"/>
 
 ## Table of Contents
 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
