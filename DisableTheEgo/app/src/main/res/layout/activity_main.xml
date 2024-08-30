@@ -30,7 +30,8 @@
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bottom_nav"
-        app:labelVisibilityMode="selected">
+        app:labelVisibilityMode="labeled"
+        style="@style/CustomBottomNavigationView">
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
