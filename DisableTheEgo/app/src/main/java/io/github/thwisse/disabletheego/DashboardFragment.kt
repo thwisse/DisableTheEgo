@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.materialswitch.MaterialSwitch
 import io.github.thwisse.disabletheego.databinding.FragmentDashboardBinding
@@ -172,6 +173,11 @@ class DashboardFragment : Fragment() {
             // Eğer Ego switch'i açıksa, diğer switch'leri açamayız.
             if (binding.swEgo.isChecked) {
                 switch.isChecked = false
+
+                if (isChecked) {
+                    binding.root.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+                }
+
                 return@setOnCheckedChangeListener
             } else {
                 // BottomNavigationView görünür hale getirilir.
