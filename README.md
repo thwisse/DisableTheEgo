@@ -1,8 +1,8 @@
 # Disable The Ego
 
-_Disable The Ego_ is an Android application designed to help users manage and "disable" their ego by focusing on positive traits such as kindness, respect, optimism, happiness, and giving. The app features a dashboard where users can enable or disable different traits, visualize them in a BottomNavigationView, and interact with the app through various fragments.
+Disable The Ego is an Android application designed to help users manage and "disable" their ego by focusing on positive traits such as kindness, respect, optimism, happiness, and giving. The app features a dashboard where users can enable or disable different traits, visualize them in a BottomNavigationView, and interact with the app through various fragments.
 
-<img src="DisableTheEgo/assets/ss_dashboard.jpg"  width="300"/> <img src="DisableTheEgo/assets/ss_happiness.gif" alt="Uygulama Kullanımı" width="305"/> <img src="DisableTheEgo/assets/ss_kindness.jpg" alt="Uygulama Kullanımı" width="300"/>
+<img src="assets/ss_dashboard.jpg"  width="250"/> <img src="assets/ss_happiness.gif" width="254"/> <img src="assets/ss_kindness.jpg" width="250"/>
 
 ## Table of Contents
 
@@ -34,7 +34,7 @@ _Disable The Ego_ is an Android application designed to help users manage and "d
 2. Clone the repository using the following command:
 
    ```bash
-   git clone https://github.com/thwisse/kekod-project-first-week.git
+   git clone https://github.com/thwisse/DisableTheEgo.git
    ```
 
 3. Navigate to the project directory:
