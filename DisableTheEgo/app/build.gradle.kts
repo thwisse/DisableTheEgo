@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "io.github.thwisse.disabletheego"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "io.github.thwisse.disabletheego"
@@ -59,5 +59,7 @@ dependencies {
 
     implementation(libs.coil)
     implementation(libs.coil.gif)
+
+    implementation(libs.androidx.core.splashscreen)
 
 }

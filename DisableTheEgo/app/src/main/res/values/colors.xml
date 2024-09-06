@@ -5,4 +5,5 @@
     <color name="switch_track_color_checked">#4CAF50</color>
     <color name="switch_track_color_unchecked">#F2972222</color>
     <color name="switch_thumb_color_white">#FFFFFFFF</color>
+    <color name="splash_background">#FFFFFF</color>
 </resources>
