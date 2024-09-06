@@ -41,10 +41,8 @@ class MainActivity : AppCompatActivity() {
 
             val navOptions = navOptions {
                 anim {
-                    enter = R.anim.slide_in_left
-                    exit = R.anim.slide_out_left
-                    popEnter = R.anim.slide_in_left
-                    popExit = R.anim.slide_out_right
+                    enter = R.anim.fade_in
+                    exit = R.anim.fade_out
                 }
             }
 
