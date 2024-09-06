@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,5 +62,10 @@ dependencies {
     implementation(libs.coil.gif)
 
     implementation(libs.androidx.core.splashscreen)
+
+    // Unit test kütüphaneleri
+    testImplementation(libs.mockito.core)
+    // Espresso UI test kütüphanesi
+    androidTestImplementation(libs.androidx.espresso.contrib)
 
 }
